@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hm.clinic.persistence.HomeMapper">
+
+  <cache />
+
+  <select id="getUserById" parameterType="int" resultType="com.hm.clinic.model.User">
+    SELECT
+          id,
+          username as userName,
+          password
+    FROM clinic.login
+    WHERE id = #{id}
+  </select>
+
+  
+</mapper>

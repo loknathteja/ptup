@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hm.clinic.persistence.PatientMapper">
+
+  <cache />
+
+  <select id="getPatientById" parameterType="int" resultType="com.hm.clinic.model.Patient">
+    SELECT
+          p_id as pId,
+          f_name as firstName,
+          m_name as middleName,
+          l_name as lastName,
+          age as age,
+          email as email,
+          address,
+          reference,
+          mobile,
+          male,
+          married as married
+    FROM clinic.patient
+    WHERE p_id = #{patientId}
+  </select>
+  <select id="getPatientHistory" parameterType="int" resultType="com.hm.clinic.model.MedicalRecord">
+  	SELECT
+  	  p_id as pId,
+  	  date as visitDate,
+  	  start_time as startTime,
+  	  end_time as endTime,
+  	  problem,
+  	  symptoms,
+  	  diagnosis_report as diagnosisReport,
+  	  medicines,
+  	  next_visit_date as nextVisitDate,
+  	  suggested_tests as suggestedTests
+  	FROM clinic.diagnosis
+  	WHERE p_id = #{patientId}
+  	  
+  </select>
+  <insert id="addPatient" parameterType="com.hm.clinic.model.Patient" useGeneratedKeys="true"
+    keyProperty="p_id">
+    insert into clinic.patient (f_name,m_name,l_name,age,email,address,reference,mobile,male
+    ,married)
+    values (#{firstName},#{middleName},#{lastName},#{age},#{email},#{address},#{reference},#{mobile},#{male},
+    #{married})
+  </insert>
+
+  <update id="updatePatient" parameterType="com.hm.clinic.model.Patient">
+	  update clinic.patient
+	    <set>
+	      <if test="firstName != null">f_name=#{firstName},</if>
+	      <if test="middleName != null">m_name=#{middleName},</if>
+	      <if test="lastName != null">l_name=#{lastName},</if>
+	      <if test="age != null">age=#{age},</if>
+	      <if test="address != null">address=#{address},</if>
+	      <if test="reference != null">reference=#{reference},</if>
+	      <if test="email != null">email=#{email},</if>
+	      <if test="mobile != null">mobile=#{mobile},</if>
+	      male=#{male},
+	      married=#{married}
+	    </set>
+	  where p_id=#{pId}
+  </update>
+</mapper>
